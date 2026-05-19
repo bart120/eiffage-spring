@@ -1,0 +1,33 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: springboot_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: springboot_db
+      POSTGRES_USER: springuser
+      POSTGRES_PASSWORD: springpassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: springboot_pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8081:80"
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: D:\docker\data\postgres
+      o: bind
