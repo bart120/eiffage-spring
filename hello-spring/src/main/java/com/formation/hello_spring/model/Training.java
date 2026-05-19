@@ -63,4 +63,14 @@ public class Training {
         this.active = active;
     }
 
+    public Training() {
+    }
+
+    public Training(String title, String description, int duration) {
+        this.title = title;
+        this.description = description;
+        this.duration = duration;
+        this.active = true;
+    }
+
 }

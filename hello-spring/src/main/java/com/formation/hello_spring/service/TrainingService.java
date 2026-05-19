@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.formation.hello_spring.dto.TrainingCreateRequest;
 import com.formation.hello_spring.dto.TrainingResponse;
+import com.formation.hello_spring.model.Training;
 import com.formation.hello_spring.repository.TrainingRepository;
 
 @Service
@@ -20,6 +22,22 @@ public class TrainingService {
                 .stream()
                 .map(TrainingResponse::fromModel)
                 .toList();
+    }
+
+    public TrainingResponse findById(Long id) {
+        return TrainingResponse.fromModel(trainingRepository.findById(id).orElseThrow());
+    }
+
+    public TrainingResponse create(TrainingCreateRequest trainingCreateRequest) {
+        Training training = new Training(
+                trainingCreateRequest.title(),
+                trainingCreateRequest.description(),
+                trainingCreateRequest.duration());
+
+        Training savedTraining = trainingRepository.save(training);
+
+        return TrainingResponse.fromModel(savedTraining);
+
     }
 
     ////// TEST//////
