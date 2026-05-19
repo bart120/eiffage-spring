@@ -1,0 +1,27 @@
+spring:
+    application:
+        name: hello-spring
+
+server:
+    port: 9090
+
+management:
+    endpoints:
+        web:
+            exposure:
+                include: health,info
+    info:
+        env:
+            enabled: true
+
+info:
+    app:
+        name: App en formation
+        description: Application de démonstration pour Spring Boot
+        version: 1.0.0
+
+training:
+    api:
+        title: API de formation Spring Boot
+        description: API pour gérer les formations
+        version: 2.0.1
