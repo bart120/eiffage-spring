@@ -9,6 +9,8 @@ import com.formation.hello_spring.dto.TrainingResponse;
 import com.formation.hello_spring.model.Training;
 import com.formation.hello_spring.repository.TrainingRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class TrainingService {
     private final TrainingRepository trainingRepository;
@@ -38,6 +40,36 @@ public class TrainingService {
 
         return TrainingResponse.fromModel(savedTraining);
 
+    }
+
+    @Transactional
+    public TrainingResponse update(Long id, TrainingCreateRequest trainingCreateRequest) {
+        Training training = trainingRepository.findById(id).orElseThrow();
+
+        training.setTitle(trainingCreateRequest.title());
+        training.setDescription(trainingCreateRequest.description());
+        training.setDuration(trainingCreateRequest.duration());
+
+        /* Training updatedTraining = trainingRepository.save(training); */
+
+        return TrainingResponse.fromModel(training);
+    }
+
+    public void delete(Long id) {
+        trainingRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void deactivate(Long id) {
+        Training training = trainingRepository.findById(id).orElseThrow();
+        training.setActive(false);
+    }
+
+    public List<TrainingResponse> searchByTitle(String title) {
+        return trainingRepository.findByTitleContainingIgnoreCase(title)
+                .stream()
+                .map(TrainingResponse::fromModel)
+                .toList();
     }
 
     ////// TEST//////
