@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 @RestController
 @RequestMapping("/api/trainings")
@@ -55,8 +57,13 @@ public class TrainingController {
     @PostMapping
     @Operation(summary = "Créer une nouvelle formation")
     @ResponseStatus(HttpStatus.CREATED)
-    public TrainingResponse createTraining(@Valid @RequestBody TrainingCreateRequest training) {
-        return trainingService.create(training);
+    public ResponseEntity<TrainingResponse> createTraining(@Valid @RequestBody TrainingCreateRequest training) {
+        // return trainingService.create(training);
+        TrainingResponse createdTraining = trainingService.create(training);
+
+        URI location = URI.create(String.format("/api/trainings/%d", createdTraining.id()));
+
+        return ResponseEntity.created(location).body(createdTraining);
     }
 
     @PutMapping("/{id}")
