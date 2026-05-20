@@ -1,19 +1,7 @@
 spring:
     application:
         name: hello-spring
-    datasource:
-        url: jdbc:postgresql://localhost:5432/springboot_db
-        username: springuser
-        password: springpassword
-        driver-class-name: org.postgresql.Driver
-    jpa:
-        show-sql: true
-        hibernate:
-            ddl-auto: update
-        defer-datasource-initialization: true
-    sql:
-        init:
-            mode: always
+    
         
 springdoc:
     api-docs:
@@ -28,7 +16,10 @@ management:
     endpoints:
         web:
             exposure:
-                include: health,info
+                include: health,info,metrics
+    endpoint:
+        health:
+            show-details: always
     info:
         env:
             enabled: true

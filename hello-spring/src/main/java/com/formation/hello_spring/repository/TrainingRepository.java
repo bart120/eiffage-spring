@@ -14,6 +14,8 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
 
     List<Training> findByActiveTrue(); // ==> where active = true
 
+    long countByActiveTrue();
+
     @Query("SELECT t FROM Training t WHERE t.id = :id")
     Training findByIdPerso(Long id);
 }

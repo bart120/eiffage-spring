@@ -10,14 +10,22 @@ import com.formation.hello_spring.exception.ResourceNotFoundException;
 import com.formation.hello_spring.model.Training;
 import com.formation.hello_spring.repository.TrainingRepository;
 
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.transaction.Transactional;
 
 @Service
 public class TrainingService {
     private final TrainingRepository trainingRepository;
+    private final Counter trainingCreatedCounter;
 
-    public TrainingService(TrainingRepository trainingRepository) {
+    public TrainingService(TrainingRepository trainingRepository,
+            MeterRegistry meterRegistry) {
         this.trainingRepository = trainingRepository;
+        this.trainingCreatedCounter = Counter.builder("training.created.total")
+                .description("Nombre total de formations créées")
+                .tag("application", "hello-spring")
+                .register(meterRegistry);
     }
 
     public List<TrainingResponse> findAll() {
@@ -39,7 +47,7 @@ public class TrainingService {
                 trainingCreateRequest.duration());
 
         Training savedTraining = trainingRepository.save(training);
-
+        trainingCreatedCounter.increment();
         return TrainingResponse.fromModel(savedTraining);
 
     }

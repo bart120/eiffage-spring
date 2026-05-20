@@ -17,7 +17,7 @@ public class TrainingServiceTest {
 
     private final TrainingRepository trainingRepository = Mockito.mock(TrainingRepository.class);
 
-    private final TrainingService trainingService = new TrainingService(trainingRepository);
+    private final TrainingService trainingService = new TrainingService(trainingRepository, null);
 
     @Test
     void shouldFindTrainingById() {
