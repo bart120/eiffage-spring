@@ -15,6 +15,11 @@ spring:
         init:
             mode: always
         
+springdoc:
+    api-docs:
+        path: /openapi
+    swagger-ui:
+        path: /docs
 
 server:
     port: 9090
