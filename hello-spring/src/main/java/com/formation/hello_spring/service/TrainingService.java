@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.formation.hello_spring.dto.TrainingCreateRequest;
 import com.formation.hello_spring.dto.TrainingResponse;
+import com.formation.hello_spring.exception.ResourceNotFoundException;
 import com.formation.hello_spring.model.Training;
 import com.formation.hello_spring.repository.TrainingRepository;
 
@@ -27,7 +28,8 @@ public class TrainingService {
     }
 
     public TrainingResponse findById(Long id) {
-        return TrainingResponse.fromModel(trainingRepository.findById(id).orElseThrow());
+        return TrainingResponse.fromModel(trainingRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Formation introuvable avec l'id : " + id)));
     }
 
     public TrainingResponse create(TrainingCreateRequest trainingCreateRequest) {
@@ -44,7 +46,8 @@ public class TrainingService {
 
     @Transactional
     public TrainingResponse update(Long id, TrainingCreateRequest trainingCreateRequest) {
-        Training training = trainingRepository.findById(id).orElseThrow();
+        Training training = trainingRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Formation introuvable avec l'id : " + id));
 
         training.setTitle(trainingCreateRequest.title());
         training.setDescription(trainingCreateRequest.description());
